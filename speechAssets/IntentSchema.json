@@ -1,0 +1,41 @@
+{
+  "intents": [
+    {
+      "intent": "CutWire",
+      "slots": [
+        {
+          "name": "Color",
+          "type": "COLORS"
+        }
+      ]
+    },
+    {
+      "intent": "ChooseSkillLevel",
+      "slots": [
+        {
+          "name": "SkillLevel",
+          "type": "SKILL_LEVELS"
+        }
+      ]
+    },    
+    {
+      "intent": "StartNewGame",
+      "slots": [
+        {
+          "name": "Yes",
+          "type": "YES"
+        },
+        {
+          "name": "No",
+          "type": "NO"
+        }
+      ]
+    },    
+    {
+      "intent": "AMAZON.StopIntent"
+    },    
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}

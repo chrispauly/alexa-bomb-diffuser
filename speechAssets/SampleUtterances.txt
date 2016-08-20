@@ -1,0 +1,12 @@
+StartNewGame {Yes}
+StartNewGame {No}
+
+ChooseSkillLevel {SkillLevel}
+ChooseSkillLevel I choose {SkillLevel}
+ChooseSkillLevel I'll pick {SkillLevel}
+ChooseSkillLevel Let me try {SkillLevel}
+
+CutWire {Color}
+CutWire Cut the {Color} wire
+CutWire Cut {Color}
+CutWire Cut {Color} wire
