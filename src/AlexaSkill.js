@@ -141,9 +141,14 @@ Response.prototype = (function () {
         }
         if (options.cardTitle && options.cardContent) {
             alexaResponse.card = {
-                type: "Simple",
+                type: "Standard",
                 title: options.cardTitle,
-                content: options.cardContent
+                text: options.cardContent
+            };
+        }
+        if (options.cardImage && alexaResponse.card) {
+            alexaResponse.card.image = {
+                smallImageUrl: options.cardImage
             };
         }
         var returnResult = {
@@ -181,13 +186,14 @@ Response.prototype = (function () {
                 shouldEndSession: false
             }));
         },
-        askWithCard: function (speechOutput, repromptSpeech, cardTitle, cardContent) {
+        askWithCard: function (speechOutput, repromptSpeech, cardTitle, cardContent, cardImage) {
             this._context.succeed(buildSpeechletResponse({
                 session: this._session,
                 output: speechOutput,
                 reprompt: repromptSpeech,
                 cardTitle: cardTitle,
                 cardContent: cardContent,
+                cardImage: cardImage,
                 shouldEndSession: false
             }));
         }

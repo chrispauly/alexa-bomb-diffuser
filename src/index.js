@@ -18,6 +18,12 @@ var GAMESTATE_INDEX = "GameState";
 var COLORS = ["red","blue","green","yellow"];
 var ENDGAME_MESSAGE = "Thank you for playing!";
 var GAME_STATES = ["newgame","ingame","playagain"]; 
+var CARD_TITLE_SUCCESS = "Bomb Diffused";
+var CARD_TITLE_FAILURE = "Bomb Exploded";
+var CARD_FAILURE_IMG = "https://alexafiles.blob.core.windows.net/demo/explosion.png";
+var CARD_SUCCESS_EASY_IMG = "https://alexafiles.blob.core.windows.net/demo/easyMedal.jpg";
+var CARD_SUCCESS_CONF_IMG = "https://alexafiles.blob.core.windows.net/demo/confidentMedal.jpg";
+var CARD_SUCCESS_MANI_IMG = "https://alexafiles.blob.core.windows.net/demo/maniacMedal.jpg";
 
 /**
  * The AlexaSkill prototype and helper functions
@@ -198,12 +204,15 @@ function cutWire(intent, session, response) {
 	// If color is detonate color, play detonate and ask to start new game
 	if (selectedColor === sessionAttributes[DETONATE_INDEX]) {
 		session.attributes[GAMESTATE_INDEX] = GAME_STATES[2];		
-		response.ask({ 
+		response.askWithCard({ 
 			speech: "<speak>Uh oh, that was the wrong wire!"
 			      + "<audio src='https://alexafiles.blob.core.windows.net/demo/explosion.mp3' />"
 				  + "<break time=\".5s\" />Do you want to play again?</speak>",
         	type: AlexaSkill.speechOutputType.SSML
-		});
+		}, "Do you want to play again?",
+		CARD_TITLE_FAILURE,
+		"You cut the wrong wire!",
+		CARD_FAILURE_IMG);
 	}
 	else {
 		sessionAttributes[CHOSENCOLORS_INDEX].push(selectedColor);
@@ -217,13 +226,20 @@ function cutWire(intent, session, response) {
 	}
 
 	if(diffused) {
+		var cardImage = sessionAttributes[DIFFUSE_INDEX].length === 3 ? CARD_SUCCESS_MANI_IMG :
+						sessionAttributes[DIFFUSE_INDEX].length === 2 ? CARD_SUCCESS_CONF_IMG :
+						CARD_SUCCESS_EASY_IMG;
+
 		session.attributes[GAMESTATE_INDEX] = GAME_STATES[2];		
-		response.ask({ 
+		response.askWithCard({ 
 			speech: "<speak>You saved the day!"
 			      + "<audio src='https://alexafiles.blob.core.windows.net/demo/applause.mp3' />"
 				  + "<break time=\"1s\" />Do you want to play again?</speak>",
         	type: AlexaSkill.speechOutputType.SSML
-		});
+		}, "Do you want to play again?",
+		CARD_TITLE_SUCCESS,
+		"You saved the day!",
+		cardImage);
 	}
 	else {
 		var wireOptions = cutWireOptions(sessionAttributes[CHOSENCOLORS_INDEX]);
