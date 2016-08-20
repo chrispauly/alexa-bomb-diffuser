@@ -104,9 +104,9 @@ BombDiffuser.prototype.intentHandlers = {
     }
 };
 
-function chooseSkillLevelHelp(session, response) {
+function chooseSkillLevelHelp(session, response, addlErrorMsg) {
 	session.attributes[GAMESTATE_INDEX] = GAME_STATES[0];
-	response.ask("Choose a skill level: Easy, Confident, or Maniac",
+	response.ask((addlErrorMsg || '') + "  Choose a skill level: Easy, Confident, or Maniac",
 				 "If you would like to quit, say stop.");
 }
 
@@ -142,7 +142,10 @@ function chooseSkillLevel(intent, session, response) {
 		sessionAttributes[DIFFUSE_INDEX] = [colors[1],colors[2],colors[3]];
 	} else {
 		// Error, ask again to pick easy confident or maniac
-		response.ask(speechOutput, helpOutput);
+		var addlErrorMsg = undefined;
+		if(skill.value && skill.value.length > 0)
+			addlErrorMsg = skill.value + " is not a valid choice.  ";
+		chooseSkillLevelHelp(session, response, addlErrorMsg);
 	}
 
 	// Reset the chosencolors list
@@ -224,7 +227,7 @@ function cutWire(intent, session, response) {
 	}
 	else {
 		var wireOptions = cutWireOptions(sessionAttributes[CHOSENCOLORS_INDEX]);
-		response.ask("Hmmm, nothing happened.  Which wire do you want to cut next: " + wireOptions, "Your options are: " + wireOptions);
+		response.ask("Hmmm, cutting the " + selectedColor + " wire did not diffuse the bomb.  Which wire do you want to cut next: " + wireOptions, "Your options are: " + wireOptions);
 	}
 }
 
